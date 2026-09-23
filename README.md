@@ -1,5 +1,8 @@
 # Grevir Test Support
 
+**Development-only package.** Its fixtures and test setup are outside the
+runtime API. See the [build and test plan](https://github.com/owebeeone/grevir-wz/blob/main/dev-docs/GrevirBuildAndTestPlan.md).
+
 Development-only native test setup and reusable register-memory fixtures. Core
 and peripheral application fixtures still live with their owning tests. This
 package is never a production dependency of Grevir Registers or AVR.
