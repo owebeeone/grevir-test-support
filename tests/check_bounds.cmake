@@ -1,7 +1,16 @@
 file(MAKE_DIRECTORY "${LOG_DIR}")
+if(COMPILER_ID STREQUAL "MSVC")
+  set(flags /nologo /std:c++latest /Zc:__cplusplus /Zs)
+  set(include_flag /I)
+  set(define_flag /D)
+else()
+  set(flags -std=c++23 -fsyntax-only)
+  set(include_flag -I)
+  set(define_flag -D)
+endif()
 foreach(case RANGE 0 3)
-  execute_process(COMMAND "${CXX}" -std=c++23 "-I${INCLUDE_DIR}"
-    "-DCASE_ID=${case}" -fsyntax-only "${SOURCE}"
+  execute_process(COMMAND "${CXX}" ${flags} "${include_flag}${INCLUDE_DIR}"
+    "${define_flag}CASE_ID=${case}" "${SOURCE}"
     RESULT_VARIABLE result OUTPUT_VARIABLE output ERROR_VARIABLE errors)
   file(WRITE "${LOG_DIR}/case-${case}.log" "${output}${errors}")
   if(case EQUAL 0)
@@ -9,7 +18,7 @@ foreach(case RANGE 0 3)
       message(FATAL_ERROR "Valid debug register failed: ${errors}")
     endif()
   elseif(NOT result MATCHES "^[1-9][0-9]*$" OR
-      NOT errors MATCHES "static assertion failed[^\n]*GREVIR_DEBUG_REGISTER_OUT_OF_BOUNDS")
+      NOT "${output}${errors}" MATCHES "(static assertion failed|static_assert failed)[^\n]*GREVIR_DEBUG_REGISTER_OUT_OF_BOUNDS")
     message(FATAL_ERROR "Expected bounds diagnostic for case ${case}: ${errors}")
   endif()
 endforeach()
