@@ -7,6 +7,9 @@ Development-only native test setup and reusable register-memory fixtures. Core
 and peripheral application fixtures still live with their owning tests. This
 package is never a production dependency of Grevir Registers or AVR.
 
+It also provides the mock interrupt controller and host startup policy used to
+exercise dispatch, pending events, repeated starts, and terminal failures.
+
 ## Shared register fixture
 
 Include `<grevir/test/register_memory.hpp>` and link `grevir::test_support`.
@@ -52,5 +55,5 @@ Provision installed Catch2 **3.8.1** or set `GREVIR_CATCH2_SOURCE_DIR` to an exi
 3.8.1 source checkout for offline setup. Only explicit
 `GREVIR_FETCH_TEST_DEPENDENCIES=ON` permits downloading the pinned,
 SHA-256-verified archive during configuration. Test execution never downloads
-anything. Shared interrupt models, old numeric-mode AVR mock globals and the
-legacy runner remain unextracted.
+anything. Old numeric-mode AVR mock globals and the legacy runner remain
+unextracted.
